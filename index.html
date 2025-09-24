@@ -3,257 +3,373 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sistema de Vendas</title>
+  <title>Mega Offer</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/x-icon" href="images/Favicon_megaoffer.ico">
 </head>
 
 <body>
   <!-- Header -->
   <header>
-    <h1>Sistema de Vendas</h1>
+    <img src="images/Mega-Offer_logo.png" alt="Mega Offer Logo" class="logo" width="120px"/>
     <nav>
       <button id="btn-dashboard" class="">Dashboard</button>
       <button id="btn-product" class="">Cadastrar produto</button>
+      <button id="btn-stock" class="">Análise de estoque</button>
       <button id="btn-register" class="">Registrar Venda</button>
     </nav>
     <div class="user-icon">U</div>
   </header>
 
   <main>
-    <!-- dashboard -->
-    <section id="dashboard-section">
-      <!-- Cards -->
-      <div class="cards">
-        <div class="card">
-          <div class="card-icon">💰</div>
+  <!-- dashboard -->
+  <section id="dashboard-section">
+    <!-- Cards -->
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div>
+          <h2>Vendas Totais</h2>
+          <p>R$ 48.500,00</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div>
+          <h2>Lucro Total</h2>
+          <p>24</p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-icon">👥</div>
+        <div>
+          <h2>Total de Clientes
+          </h2>
+          <p>12</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h2>Desempenho de Vendas</h2>
+      <canvas id="salesChart" height="300"></canvas>
+    </div>
+
+    <div class="box">
+      <h2>Vendas Recentes</h2>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Cliente</th>
+              <th>Valor</th>
+              <th>Data</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Laptop</td>
+              <td>João Silva</td>
+              <td class="amount">R$ 2.500,00</td>
+              <td>2023-10-15</td>
+            </tr>
+            <tr>
+              <td>Smartphone</td>
+              <td>Maria Santos</td>
+              <td class="amount">R$ 1.200,00</td>
+              <td>2023-10-14</td>
+            </tr>
+            <tr>
+              <td>Tablet</td>
+              <td>Pedro Costa</td>
+              <td class="amount">R$ 900,00</td>
+              <td>2023-10-14</td>
+            </tr>
+            <tr>
+              <td>Monitor</td>
+              <td>Ana Oliveira</td>
+              <td class="amount">R$ 800,00</td>
+              <td>2023-10-13</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- registrar venda -->
+<section id="register-section" style="display:none;">
+    <div class="box">
+      <h2>Registrar Nova Venda</h2>
+      <form id="saleForm">
+        <div class="grid">
           <div>
-            <h2>Vendas Totais</h2>
-            <p>R$ 48.500,00</p>
+            <label for="saleProductName">Nome do Produto</label>
+            <input type="text" id="saleProductName" name="saleProductName" required />
           </div>
-        </div>
-        <div class="card">
-          <div class="card-icon">📦</div>
           <div>
-            <h2>Novos Pedidos</h2>
-            <p>24</p>
+            <label for="saleQuantity">Quantidade</label>
+            <input type="number" id="saleQuantity" name="saleQuantity" required min="1"/>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-icon">👥</div>
           <div>
-            <h2>Novos Clientes</h2>
-            <p>12</p>
+            <label for="salePrice">Preço (R$)</label>
+            <input type="number" id="salePrice" name="salePrice" required min="0" step="0.01"/>
           </div>
-        </div>
-        <div class="card">
-          <div class="card-icon">📈</div>
+
+          <div id="customer-name-container" style="display:none;">
+            <label for="customerName">Nome do Cliente</label>
+            <input type="text" id="customerName" name="customerName" />
+          </div>
+
           <div>
-            <h2>Crescimento</h2>
-            <p>15.2%</p>
+            <label for="saleDate">Data da Venda</label>
+            <input type="date" id="saleDate" name="saleDate" required>
+          </div>
+          
+          <div>
+            <label>Tipo de Compra</label>
+            <div style="display: flex; gap: 20px;">
+              <div>
+                <input type="radio" id="compra-avulsa" name="purchaseType" value="avulsa" required>
+                <label for="compra-avulsa">Avulsa</label>
+              </div>
+              <div>
+                <input type="radio" id="compra-cliente" name="purchaseType" value="cliente" required>
+                <label for="compra-cliente">Cliente</label>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="box">
-        <h2>Desempenho de Vendas</h2>
-        <canvas id="salesChart" height="300"></canvas>
-      </div>
-
-      <div class="box">
-        <h2>Vendas Recentes</h2>
-        <div style="overflow-x:auto;">
-          <table>
-            <thead>
-              <tr>
-                <th>Produto</th>
-                <th>Cliente</th>
-                <th>Valor</th>
-                <th>Data</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Laptop</td>
-                <td>João Silva</td>
-                <td class="amount">R$ 2.500,00</td>
-                <td>2023-10-15</td>
-              </tr>
-              <tr>
-                <td>Smartphone</td>
-                <td>Maria Santos</td>
-                <td class="amount">R$ 1.200,00</td>
-                <td>2023-10-14</td>
-              </tr>
-              <tr>
-                <td>Tablet</td>
-                <td>Pedro Costa</td>
-                <td class="amount">R$ 900,00</td>
-                <td>2023-10-14</td>
-              </tr>
-              <tr>
-                <td>Monitor</td>
-                <td>Ana Oliveira</td>
-                <td class="amount">R$ 800,00</td>
-                <td>2023-10-13</td>
-              </tr>
-            </tbody>
-          </table>
+        <div style="text-align:right;">
+          <button type="submit" class="submit">Registrar Venda</button>
         </div>
-      </div>
-    </section>
+      </form>
+    </div>
+</section>
 
-    
-    <section id="register-section" style="display:none;">
-      <div class="box">
-        <h2>Registrar Nova Venda</h2>
-        <form id="saleForm">
-          <div class="grid">
-            <div>
-              <label for="productName">Nome do Produto</label>
-              <input type="text" id="productName" name="productName" required />
-            </div>
-            <div>
-              <label for="quantity">Quantidade</label>
-              <input type="number" id="quantity" name="quantity" required min="1"/>
-            </div>
-            <div>
-              <label for="price">Preço (R$)</label>
-              <input type="number" id="price" name="price" required min="0" step="0.01"/>
-            </div>
-            <div>
-              <label for="customerName">Nome do Cliente</label>
-              <input type="text" id="customerName" name="customerName" required/>
-            </div>
-            <div>
-              <label for="date">Data da Venda</label>
-              <input type="date" id="date" name="date" required value="">
-            </div>
+  <!-- registrar produto -->
+  <section id="register-product" style="display:none;">
+    <div class="box">
+      <h2>Registrar Produto</h2>
+      <form id="formProduct">
+        <div class="grid">
+          <div>
+            <label for="prodName">Nome do Produto</label>
+            <input type="text" id="prodName" name="prodName" required />
           </div>
-          <div style="text-align:right;">
-            <button type="submit" class="submit">Registrar Venda</button>
+          <div>
+            <label for="prodQuantity">Quantidade</label>
+            <input type="number" id="prodQuantity" name="prodQuantity" required min="1"/>
           </div>
-        </form>
-      </div>
-    </section>
+          <div>
+            <label for="prodPrice">Preço (R$)</label>
+            <input type="number" id="prodPrice" name="prodPrice" required min="0" step="0.01"/>
+          </div>
+          <div>
+            <label for="prodCost">Preço de Custo(R$)</label>
+            <input type="number" id="prodCost" name="prodCost" required min="0" step="0.01"/>
+          </div>
+        </div>
+        <div style="text-align:right;">
+          <button type="submit" class="submit">Salvar Produto</button>
+        </div>
 
-    <section id="register-product" style="display:none;">
-      <div class="box">
-        <h2>Registrar Produto</h2>
-        <form id="formProduct">
-          <div class="grid">
-            <div>
-              <label for="productName">Nome do Produto</label>
-              <input type="text" id="productName" name="productName" required />
-            </div>
-            <div>
-              <label for="quantity">Quantidade</label>
-              <input type="number" id="quantity" name="quantity" required min="1"/>
-            </div>
-            <div>
-              <label for="price">Preço (R$)</label>
-              <input type="number" id="price" name="price" required min="0" step="0.01"/>
-            </div>
-          </div>
-          <div style="text-align:right;">
-            <button type="submit" class="submit">Salvar Produto</button>
-          </div>
-        </form>
-      </div>
-    </section>
 
-  </main>
+      </form>
+    </div>
+</section>
+
+  <!-- análise de estoque -->
+  <section id="stock-section" style="display:none;">
+    <div class="box">
+      <h2>Análise de Estoque</h2>
+      <p></p>
+    </div>
+  </section>
+</main>
   
 
   <script>
-    // Alternar abas
-    const btnDashboard = document.getElementById("btn-dashboard");
-    const btnRegister = document.getElementById("btn-register");
-    const btnProduct = document.getElementById("btn-product");
+document.addEventListener('DOMContentLoaded', function() {
 
-    const dashboardSection = document.getElementById("dashboard-section");
-    const registerSection = document.getElementById("register-section");
-    const registerProduct = document.getElementById("register-product");
+  // ABRIR O SCRIPT AQUI DENTRO DO DOMContentLoaded
 
-    btnDashboard.addEventListener("click", () => {
-      btnDashboard.classList.add("active");
-      btnRegister.classList.remove("active");
-      dashboardSection.style.display = "block";
-      registerSection.style.display = "none";
-      registerProduct.style.display = "none";
-    });
+// Ocultar/Exibir campo do cliente com base na seleção
+const purchaseTypeRadios = document.querySelectorAll('input[name="purchaseType"]');
+const customerNameContainer = document.getElementById('customer-name-container');
+const customerNameInput = document.getElementById('customerName');
 
-    btnRegister.addEventListener("click", () => {
-      btnRegister.classList.add("active");
-      btnDashboard.classList.remove("active");
-      registerSection.style.display = "block";
-      dashboardSection.style.display = "none";
-      registerProduct.style.display = "none";
-    });
-
-    btnProduct.addEventListener("click", () => {
-      btnProduct.classList.add("active");
-      btnDashboard.classList.remove("active");
-      btnRegister.classList.remove("none"); 
-      registerProduct.style.display = "block";  
-      registerSection.style.display = "none";
-      dashboardSection.style.display = "none";
+purchaseTypeRadios.forEach(radio => {
+  radio.addEventListener('change', (event) => {
+    if (event.target.value === 'cliente') {
+      customerNameContainer.style.display = 'block'; // Exibe o campo
+      customerNameInput.required = true; // Torna o campo obrigatório
+    } else {
+      customerNameContainer.style.display = 'none'; // Oculta o campo
+      customerNameInput.required = false; // Torna o campo opcional
+      customerNameInput.value = ''; // Limpa o valor para evitar envio de dados indesejados
+    }
+  });
 });
 
-    // Chart.js gráfico
-    const ctx = document.getElementById("salesChart").getContext("2d");
-    new Chart(ctx, {
-      type: "line",
-      data: {
-        labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul"],
-        datasets: [
-          {
-            label: "Vendas",
-            data: [4000,3000,2000,2780,1890,2390,3490],
-            borderColor: "#1E88E5",
-            backgroundColor: "rgba(30,136,229,0.1)",
-            borderWidth: 2,
-            tension: 0.3,
-            fill: true,
-          },
-          {
-            label: "Receita",
-            data: [2400,1398,9800,3908,4800,3800,4300],
-            borderColor: "#2563EB",
-            backgroundColor: "rgba(37,99,235,0.1)",
-            borderWidth: 2,
-            tension: 0.3,
-            fill: true,
-          }
-        ]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: "top" },
-          tooltip: { enabled: true }
+// Registrar venda
+document.getElementById("saleForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const form = e.target;
+  
+  const selectedPurchaseType = document.querySelector('input[name="purchaseType"]:checked');
+  
+  if (!selectedPurchaseType) {
+    alert("Por favor, selecione se é uma Compra Avulsa ou de Cliente.");
+    return;
+  }
+
+  const data = {
+    productName: form.saleProductName.value,
+    quantity: form.saleQuantity.value,
+    price: form.salePrice.value,
+    customerName: form.customerName.value,
+    date: form.saleDate.value,
+    purchaseType: selectedPurchaseType.value
+  };
+  
+  alert("Venda registrada com sucesso!\n" + JSON.stringify(data, null, 2));
+  
+  form.reset();
+  document.getElementById("saleDate").value = new Date().toISOString().split("T")[0];
+});
+
+// FECHAR O SCRIPT AQUI DENTRO DO DOMContentLoaded
+
+  const buttons = document.querySelectorAll("nav button");
+  const sections = {
+    "btn-dashboard": document.getElementById("dashboard-section"),
+    "btn-product": document.getElementById("register-product"),
+    "btn-stock": document.getElementById("stock-section"),
+    "btn-register": document.getElementById("register-section"),
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      buttons.forEach(b => b.classList.remove("active"));
+      Object.values(sections).forEach(sec => sec.style.display = "none");
+      btn.classList.add("active");
+      sections[btn.id].style.display = "block";
+    });
+  });
+
+  // Gráfico do Chart.js
+  const ctx = document.getElementById("salesChart").getContext("2d");
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul"],
+      datasets: [
+        {
+          label: "Vendas",
+          data: [4000,3000,2000,2780,1890,2390,3490],
+          borderColor: "#1E88E5",
+          backgroundColor: "rgba(30,136,229,0.1)",
+          borderWidth: 2,
+          tension: 0.3,
+          fill: true,
+        },
+        {
+          label: "Receita",
+          data: [2400,1398,9800,3908,4800,3800,4300],
+          borderColor: "#2563EB",
+          backgroundColor: "rgba(37,99,235,0.1)",
+          borderWidth: 2,
+          tension: 0.3,
+          fill: true,
         }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: "top" },
+        tooltip: { enabled: true }
       }
-    });
+    }
+  });
 
-    // Preencher data padrão no form
-    document.getElementById("date").value = new Date().toISOString().split("T")[0];
+  
+  document.getElementById("saleDate").value = new Date().toISOString().split("T")[0];
 
-    // Registrar venda
-    document.getElementById("saleForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const form = e.target;
-      const data = {
-        productName: form.productName.value,
-        quantity: form.quantity.value,
-        price: form.price.value,
-        customerName: form.customerName.value,
-        date: form.date.value,
-      };
-      alert("Venda registrada com sucesso!\n" + JSON.stringify(data, null, 2));
-      form.reset();
-      document.getElementById("date").value = new Date().toISOString().split("T")[0];
+  // Registrar venda
+  // Registrar venda
+document.getElementById("saleForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const form = e.target;
+  
+  // Verifica se alguma opção de tipo de compra foi selecionada
+  const selectedPurchaseType = document.querySelector('input[name="purchaseType"]:checked');
+  
+  // Se nada foi selecionado, exibe um alerta
+  if (!selectedPurchaseType) {
+    alert("Por favor, selecione se é uma Compra Avulsa ou de Cliente.");
+    return; // Interrompe o envio do formulário
+  }
+  
+  // A partir daqui, o código só executa se uma opção foi marcada
+  const data = {
+    productName: form.saleProductName.value,
+    quantity: form.saleQuantity.value,
+    price: form.salePrice.value,
+    customerName: form.customerName.value,
+    date: form.saleDate.value,
+    purchaseType: selectedPurchaseType.value // Adiciona o valor da opção selecionada
+  };
+  
+  // Apenas para demonstração, o alerta de sucesso só aparece após a validação
+  alert("Venda registrada com sucesso!\n" + JSON.stringify(data, null, 2));
+  
+  form.reset();
+  document.getElementById("saleDate").value = new Date().toISOString().split("T")[0];
+});
+
+  // Conexão com o backend para salvar produto
+  document.getElementById('formProduct').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+    const formData = new FormData(this);
+
+    fetch('salvar_produto.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.text())
+    .then(data => {
+      alert(data);
+      if (data.includes("sucesso")) {
+        this.reset();
+        loadStockData();
+      }
+    })
+    .catch(error => {
+      console.error('Erro:', error);
     });
-  </script>
+  });
+
+  // Função para carregar dados do estoque
+  function loadStockData() {
+    fetch('buscar_produtos.php')
+    .then(response => response.text())
+    .then(data => {
+      const stockSection = document.getElementById('stock-section').querySelector('.box');
+      stockSection.innerHTML = '<h2>Análise de Estoque</h2>' + data;
+    })
+    .catch(error => {
+      console.error('Erro ao carregar estoque:', error);
+    });
+  }
+
+  // Chame a função quando a página for carregada
+  loadStockData();
+});
+
+</script>
 </body>
 </html>

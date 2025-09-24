@@ -1,0 +1,27 @@
+<body>
+  <!-- Loader -->
+  <div id="loader">
+    <main class="loader-wrap">
+      <div class="spinner">
+        <div class="ring"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="loader-text">Carregando...</div>
+    </main>
+  </div>
+
+  <!-- Conteúdo da página -->
+  <div id="conteudo" style="display:none;">
+    <h1>Bem-vindo ao Sistema!</h1>
+    <p>Agora o loader sumiu 😎</p>
+  </div>
+
+  <script>
+    // Esconde loader quando a página terminar de carregar
+    window.addEventListener("load", () => {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("conteudo").style.display = "block";
+    });
+  </script>
+</body>
+
