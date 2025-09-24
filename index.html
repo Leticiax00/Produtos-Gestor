@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sistema de Vendas</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header>
+    <h1>Sistema de Vendas</h1>
+    <nav>
+      <button id="btn-dashboard" class="">Dashboard</button>
+      <button id="btn-product" class="">Cadastrar produto</button>
+      <button id="btn-register" class="">Registrar Venda</button>
+    </nav>
+    <div class="user-icon">U</div>
+  </header>
+
+  <main>
+    <!-- dashboard -->
+    <section id="dashboard-section">
+      <!-- Cards -->
+      <div class="cards">
+        <div class="card">
+          <div class="card-icon">💰</div>
+          <div>
+            <h2>Vendas Totais</h2>
+            <p>R$ 48.500,00</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📦</div>
+          <div>
+            <h2>Novos Pedidos</h2>
+            <p>24</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">👥</div>
+          <div>
+            <h2>Novos Clientes</h2>
+            <p>12</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📈</div>
+          <div>
+            <h2>Crescimento</h2>
+            <p>15.2%</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="box">
+        <h2>Desempenho de Vendas</h2>
+        <canvas id="salesChart" height="300"></canvas>
+      </div>
+
+      <div class="box">
+        <h2>Vendas Recentes</h2>
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Cliente</th>
+                <th>Valor</th>
+                <th>Data</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Laptop</td>
+                <td>João Silva</td>
+                <td class="amount">R$ 2.500,00</td>
+                <td>2023-10-15</td>
+              </tr>
+              <tr>
+                <td>Smartphone</td>
+                <td>Maria Santos</td>
+                <td class="amount">R$ 1.200,00</td>
+                <td>2023-10-14</td>
+              </tr>
+              <tr>
+                <td>Tablet</td>
+                <td>Pedro Costa</td>
+                <td class="amount">R$ 900,00</td>
+                <td>2023-10-14</td>
+              </tr>
+              <tr>
+                <td>Monitor</td>
+                <td>Ana Oliveira</td>
+                <td class="amount">R$ 800,00</td>
+                <td>2023-10-13</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    
+    <section id="register-section" style="display:none;">
+      <div class="box">
+        <h2>Registrar Nova Venda</h2>
+        <form id="saleForm">
+          <div class="grid">
+            <div>
+              <label for="productName">Nome do Produto</label>
+              <input type="text" id="productName" name="productName" required />
+            </div>
+            <div>
+              <label for="quantity">Quantidade</label>
+              <input type="number" id="quantity" name="quantity" required min="1"/>
+            </div>
+            <div>
+              <label for="price">Preço (R$)</label>
+              <input type="number" id="price" name="price" required min="0" step="0.01"/>
+            </div>
+            <div>
+              <label for="customerName">Nome do Cliente</label>
+              <input type="text" id="customerName" name="customerName" required/>
+            </div>
+            <div>
+              <label for="date">Data da Venda</label>
+              <input type="date" id="date" name="date" required value="">
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <button type="submit" class="submit">Registrar Venda</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <section id="register-product" style="display:none;">
+      <div class="box">
+        <h2>Registrar Produto</h2>
+        <form id="formProduct">
+          <div class="grid">
+            <div>
+              <label for="productName">Nome do Produto</label>
+              <input type="text" id="productName" name="productName" required />
+            </div>
+            <div>
+              <label for="quantity">Quantidade</label>
+              <input type="number" id="quantity" name="quantity" required min="1"/>
+            </div>
+            <div>
+              <label for="price">Preço (R$)</label>
+              <input type="number" id="price" name="price" required min="0" step="0.01"/>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <button type="submit" class="submit">Salvar Produto</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+  
+
+  <script>
+    // Alternar abas
+    const btnDashboard = document.getElementById("btn-dashboard");
+    const btnRegister = document.getElementById("btn-register");
+    const btnProduct = document.getElementById("btn-product");
+
+    const dashboardSection = document.getElementById("dashboard-section");
+    const registerSection = document.getElementById("register-section");
+    const registerProduct = document.getElementById("register-product");
+
+    btnDashboard.addEventListener("click", () => {
+      btnDashboard.classList.add("active");
+      btnRegister.classList.remove("active");
+      dashboardSection.style.display = "block";
+      registerSection.style.display = "none";
+      registerProduct.style.display = "none";
+    });
+
+    btnRegister.addEventListener("click", () => {
+      btnRegister.classList.add("active");
+      btnDashboard.classList.remove("active");
+      registerSection.style.display = "block";
+      dashboardSection.style.display = "none";
+      registerProduct.style.display = "none";
+    });
+
+    btnProduct.addEventListener("click", () => {
+      btnProduct.classList.add("active");
+      btnDashboard.classList.remove("active");
+      btnRegister.classList.remove("none"); 
+      registerProduct.style.display = "block";  
+      registerSection.style.display = "none";
+      dashboardSection.style.display = "none";
+});
+
+    // Chart.js gráfico
+    const ctx = document.getElementById("salesChart").getContext("2d");
+    new Chart(ctx, {
+      type: "line",
+      data: {
+        labels: ["Jan","Feb","Mar","Apr","May","Jun","Jul"],
+        datasets: [
+          {
+            label: "Vendas",
+            data: [4000,3000,2000,2780,1890,2390,3490],
+            borderColor: "#1E88E5",
+            backgroundColor: "rgba(30,136,229,0.1)",
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true,
+          },
+          {
+            label: "Receita",
+            data: [2400,1398,9800,3908,4800,3800,4300],
+            borderColor: "#2563EB",
+            backgroundColor: "rgba(37,99,235,0.1)",
+            borderWidth: 2,
+            tension: 0.3,
+            fill: true,
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "top" },
+          tooltip: { enabled: true }
+        }
+      }
+    });
+
+    // Preencher data padrão no form
+    document.getElementById("date").value = new Date().toISOString().split("T")[0];
+
+    // Registrar venda
+    document.getElementById("saleForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        productName: form.productName.value,
+        quantity: form.quantity.value,
+        price: form.price.value,
+        customerName: form.customerName.value,
+        date: form.date.value,
+      };
+      alert("Venda registrada com sucesso!\n" + JSON.stringify(data, null, 2));
+      form.reset();
+      document.getElementById("date").value = new Date().toISOString().split("T")[0];
+    });
+  </script>
+</body>
+</html>
